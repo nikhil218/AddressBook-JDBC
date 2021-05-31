@@ -17,4 +17,17 @@ class AddressBookTest {
         Assertions.assertEquals(5, addressBookDataList.size());
     }
 
+    @Test
+    public void givenNewDataShouldBeUpdatedInDatabase() throws SQLException {
+        AddressBook addressBook = new AddressBook();
+        int result = addressBook.updateData(1, "Mehra");
+        Assertions.assertEquals(1, result);
+    }
+
+    @Test
+    public void givenNewDataShouldBePrintedOnConsole() throws SQLException {
+        AddressBook addressBook = new AddressBook();
+        addressBook.updateViaStatementData(2, "Ojha");
+    }
+
 }
