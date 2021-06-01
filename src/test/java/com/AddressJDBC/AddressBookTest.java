@@ -25,9 +25,10 @@ class AddressBookTest {
     }
 
     @Test
-    public void givenNewDataShouldBePrintedOnConsole() throws SQLException {
+    void givenDateRange_WhenRetrieved_ShouldMatchAddressBook_Count() throws SQLException {
         AddressBook addressBook = new AddressBook();
-        addressBook.updateViaStatementData(2, "Ojha");
+        List<AddressBookData> addressBookDataList = addressBook.return_Values_between_Particular_DateRange("2016-01-01", "2018-01-01");
+        Assertions.assertEquals(3, addressBookDataList.size());
     }
 
 }

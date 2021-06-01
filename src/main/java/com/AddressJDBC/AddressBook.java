@@ -33,7 +33,6 @@ public class AddressBook {
         try (Connection connection = this.getConnection()){
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-            printData(resultSet);
             addressBookList = this.addData(resultSet);
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,7 +51,8 @@ public class AddressBook {
             String State = resultSet.getString("State");
             String PhoneNum = resultSet.getString("PhoneNum");
             String Email = resultSet.getString("Email");
-            addressBookList.add(new AddressBookData(id, Firstname, Lastname, address, City, State, PhoneNum, Email));
+            Date start_date = resultSet.getDate("Joining_Date");
+            addressBookList.add(new AddressBookData(id, Firstname, Lastname, address, City, State, PhoneNum, Email, start_date));
         }
         return addressBookList;
     }
@@ -71,19 +71,6 @@ public class AddressBook {
         return 0;
     }
 
-    public int updateViaStatementData(int id, String Lastname) throws SQLException {
-        String sql = String.format("UPDATE address_book set LastName = '%s' where id = %d ;", Lastname, id);
-        try {
-            Connection connection = this.getConnection();
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(sql);
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     public List<AddressBookData> printData(ResultSet resultSet) throws SQLException {
         List<AddressBookData> addressBookList = new ArrayList<>();
         while (resultSet.next()){
@@ -95,6 +82,7 @@ public class AddressBook {
             String State = resultSet.getString("State");
             String PhoneNum = resultSet.getString("PhoneNum");
             String Email = resultSet.getString("Email");
+            Date start_date = resultSet.getDate("Joining_date");
             System.out.println("\n");
             System.out.println("Id : " + id);
             System.out.println("Firstname : " + Firstname);
@@ -104,9 +92,43 @@ public class AddressBook {
             System.out.println("State : " + State);
             System.out.println("PhoneNum : " + PhoneNum);
             System.out.println("Email : " + Email);
+            System.out.println("Start_date : " + start_date);
         }
         return addressBookList;
     }
+
+    public List<AddressBookData> return_Values_between_Particular_DateRange(String startDate, String endDate) throws SQLException{
+        List<AddressBookData> addressBookList = new ArrayList<>();
+        String sql = String.format("select * from address_book where Joining_Date between '%s' and '%s' ;", startDate, endDate);
+        return this.getDataInDataBase(sql);
+        /*
+        Connection connection = this.getConnection();
+        try{
+            connection.setAutoCommit(false);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while(resultSet.next()){
+                int id = resultSet.getInt("ID");
+                String Firstname = resultSet.getString("FirstName");
+                String Lastname = resultSet.getString("LastName");
+                String address = resultSet.getString("Address");
+                String City = resultSet.getString("City");
+                String State = resultSet.getString("State");
+                String PhoneNum = resultSet.getString("PhoneNum");
+                String Email = resultSet.getString("Email");
+                Date start_date = resultSet.getDate("Joining_date");
+
+                addressBookList.add(new AddressBookData(id, Firstname, Lastname, address, City, State, PhoneNum, Email, start_date));
+            }
+            System.out.println(addressBookList.toString());
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return addressBookList;
+         */
+    }
+
 
     private static void listDrivers() {
         Enumeration<Driver> driverList= DriverManager.getDrivers();
@@ -115,5 +137,4 @@ public class AddressBook {
             System.out.println(" "+driverClass.getClass().getName());
         }
     }
-
 }
