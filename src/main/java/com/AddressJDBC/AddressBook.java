@@ -98,35 +98,52 @@ public class AddressBook {
     }
 
     public List<AddressBookData> return_Values_between_Particular_DateRange(String startDate, String endDate) throws SQLException{
-        List<AddressBookData> addressBookList = new ArrayList<>();
         String sql = String.format("select * from address_book where Joining_Date between '%s' and '%s' ;", startDate, endDate);
         return this.getDataInDataBase(sql);
-        /*
+    }
+
+    public String countByCity(String city) throws SQLException {
         Connection connection = this.getConnection();
+        String result = null;
         try{
             connection.setAutoCommit(false);
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement("Select count(*) from address_book where city = 'Kalyan';");
+            //preparedStatement.setString(1, city);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            connection.commit();
             while(resultSet.next()){
-                int id = resultSet.getInt("ID");
-                String Firstname = resultSet.getString("FirstName");
-                String Lastname = resultSet.getString("LastName");
-                String address = resultSet.getString("Address");
-                String City = resultSet.getString("City");
-                String State = resultSet.getString("State");
-                String PhoneNum = resultSet.getString("PhoneNum");
-                String Email = resultSet.getString("Email");
-                Date start_date = resultSet.getDate("Joining_date");
-
-                addressBookList.add(new AddressBookData(id, Firstname, Lastname, address, City, State, PhoneNum, Email, start_date));
+                result = resultSet.getString(1);
+                System.out.println(resultSet.getString(1));
             }
-            System.out.println(addressBookList.toString());
+            return result;
         }
         catch (SQLException throwables) {
             throwables.printStackTrace();
+            connection.rollback();
         }
-        return addressBookList;
-         */
+        return  result;
+    }
+
+    public String countByState(String state) throws SQLException {
+        Connection connection = this.getConnection();
+        String result = null;
+        try{
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement("Select count(*) from addressbooktable where state = ?;");
+            preparedStatement.setString(1, state);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            connection.commit();
+            while(resultSet.next()){
+                result = resultSet.getString(1);
+                System.out.println(resultSet.getString(1));
+            }
+            return result;
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+            connection.rollback();
+        }
+        return  result;
     }
 
 

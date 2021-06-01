@@ -31,4 +31,18 @@ class AddressBookTest {
         Assertions.assertEquals(3, addressBookDataList.size());
     }
 
+    @Test
+    public void count_Contacts_in_a_City() throws SQLException {
+        AddressBook addressBook = new AddressBook();
+        String result = addressBook.countByCity("Mumbai");
+        Assertions.assertEquals("3", result);
+    }
+
+    @Test
+    public void count_Contacts_in_a_State() throws SQLException {
+        AddressBook addressBook = new AddressBook();
+        String result = addressBook.countByState("Maharashtra");
+        Assertions.assertEquals("4", result);
+    }
+
 }
