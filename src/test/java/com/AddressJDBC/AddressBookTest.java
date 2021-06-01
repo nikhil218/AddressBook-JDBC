@@ -41,8 +41,8 @@ class AddressBookTest {
     @Test
     public void count_Contacts_in_a_State() throws SQLException {
         AddressBook addressBook = new AddressBook();
-        String result = addressBook.countByState("Maharashtra");
-        Assertions.assertEquals("4", result);
+        String result = addressBook.countByState("Maha");
+        Assertions.assertEquals("5", result);
     }
 
 }

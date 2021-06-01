@@ -129,7 +129,7 @@ public class AddressBook {
         String result = null;
         try{
             connection.setAutoCommit(false);
-            PreparedStatement preparedStatement = connection.prepareStatement("Select count(*) from addressbooktable where state = ?;");
+            PreparedStatement preparedStatement = connection.prepareStatement("Select count(*) from address_book where state = ?;");
             preparedStatement.setString(1, state);
             ResultSet resultSet = preparedStatement.executeQuery();
             connection.commit();
