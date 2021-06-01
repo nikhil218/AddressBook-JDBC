@@ -154,4 +154,31 @@ public class AddressBook {
             System.out.println(" "+driverClass.getClass().getName());
         }
     }
+
+    public void addANewRowInDB(String FirstName, String LastName, String Address, String City, String State, String PhoneNum, String Email, String Joining_date) throws SQLException {
+        Connection connection = this.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            String sql = "insert into address_book(FirstName, LastName, Address, City, State, PhoneNum, Email, Joining_date)\n" +
+                    "values(?, ?, ?, ?, ?, ?, ?, ?);";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, FirstName);
+            preparedStatement.setString(2, LastName);
+            preparedStatement.setString(3, Address);
+            preparedStatement.setString(4, City);
+            preparedStatement.setString(5, State);
+            preparedStatement.setString(6, PhoneNum);
+            preparedStatement.setString(7, Email);
+            preparedStatement.setString(8, Joining_date);
+
+            preparedStatement.executeUpdate();
+
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            connection.rollback();
+        }
+    }
+
 }

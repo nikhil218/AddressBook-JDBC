@@ -45,4 +45,12 @@ class AddressBookTest {
         Assertions.assertEquals("5", result);
     }
 
+    @Test
+    public void CheckIfNewContactIsInsertedIntoDatabase() throws SQLException {
+        AddressBook addressBook = new AddressBook();
+        addressBook.addANewRowInDB("Aditya", "Annaldasula", "11E, XYZ colony", "Worli", "Maha", "543678", "Adi@gmail.com", "2019-06-01");
+        List<AddressBookData> addressBookDataList = addressBook.readData();
+        Assertions.assertEquals(6, addressBookDataList.size());
+    }
+
 }
