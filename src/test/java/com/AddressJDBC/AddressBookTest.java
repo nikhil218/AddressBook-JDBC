@@ -34,7 +34,7 @@ class AddressBookTest {
     @Test
     public void count_Contacts_in_a_City() throws SQLException {
         AddressBook addressBook = new AddressBook();
-        String result = addressBook.countByCity("Mumbai");
+        String result = addressBook.countByCity("Kalyan");
         Assertions.assertEquals("3", result);
     }
 

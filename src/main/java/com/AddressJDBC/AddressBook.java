@@ -107,8 +107,8 @@ public class AddressBook {
         String result = null;
         try{
             connection.setAutoCommit(false);
-            PreparedStatement preparedStatement = connection.prepareStatement("Select count(*) from address_book where city = 'Kalyan';");
-            //preparedStatement.setString(1, city);
+            PreparedStatement preparedStatement = connection.prepareStatement("Select count(*) from address_book where city = ?;");
+            preparedStatement.setString(1, city);
             ResultSet resultSet = preparedStatement.executeQuery();
             connection.commit();
             while(resultSet.next()){
