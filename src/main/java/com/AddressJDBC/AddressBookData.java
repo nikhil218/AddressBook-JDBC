@@ -1,8 +1,6 @@
 package com.AddressJDBC;
 
-import java.security.PrivateKey;
 import java.sql.Date;
-import java.time.LocalDate;
 
 public class AddressBookData {
     private int id;
@@ -13,9 +11,9 @@ public class AddressBookData {
     private String State;
     private String PhoneNum;
     private String Email;
-    private Date Joining_date;
+    private String Joining_date;
 
-    public AddressBookData(int id, String firstname, String lastName, String address, String city, String state, String phoneNum, String email, Date Joining_date) {
+    public AddressBookData(int id, String firstname, String lastName, String address, String city, String state, String phoneNum, String email, String Joining_date) {
         this.id = id;
         this.Firstname = firstname;
         this.LastName = lastName;
@@ -25,6 +23,10 @@ public class AddressBookData {
         this.PhoneNum = phoneNum;
         this.Email = email;
         this.Joining_date = Joining_date;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getFirstname() {
@@ -81,6 +83,14 @@ public class AddressBookData {
 
     public void setEmail(String email) {
         this.Email = email;
+    }
+
+    public String getJoining_date() {
+        return Joining_date;
+    }
+
+    public void setJoining_date(String joining_date) {
+        Joining_date = joining_date;
     }
 
     @Override

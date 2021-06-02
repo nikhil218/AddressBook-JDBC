@@ -1,10 +1,8 @@
 package com.AddressJDBC;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.sql.Date;
+import java.util.*;
 
 public class AddressBook {
 
@@ -51,7 +49,7 @@ public class AddressBook {
             String State = resultSet.getString("State");
             String PhoneNum = resultSet.getString("PhoneNum");
             String Email = resultSet.getString("Email");
-            Date start_date = resultSet.getDate("Joining_Date");
+            String start_date = resultSet.getString("Joining_Date");
             addressBookList.add(new AddressBookData(id, Firstname, Lastname, address, City, State, PhoneNum, Email, start_date));
         }
         return addressBookList;
@@ -179,6 +177,34 @@ public class AddressBook {
             e.printStackTrace();
             connection.rollback();
         }
+    }
+
+    public void addContactsToAddressBookWithThreads(List<AddressBookData> addressBookDataList) throws SQLException{
+        Map<Integer, Boolean> contactAdditionStatus = new HashMap<Integer, Boolean>();
+        addressBookDataList.forEach(addressBookData -> {
+            Runnable task = () -> {
+                contactAdditionStatus.put(addressBookData.hashCode(), false);
+                System.out.println("Employee Being Added: "+Thread.currentThread().getName());
+                try {
+                    this.addANewRowInDB(addressBookData.getFirstname(), addressBookData.getLastName(), addressBookData.getAddress(), addressBookData.getCity(),
+                            addressBookData.getState(), addressBookData.getPhoneNum(), addressBookData.getEmail(), String.valueOf(addressBookData.getJoining_date()));
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                contactAdditionStatus.put(addressBookData.hashCode(), true);
+                System.out.println("Employee added : " + Thread.currentThread().getName());
+            };
+            Thread thread = new Thread(task, addressBookData.getFirstname());
+            thread.start();
+        });
+        while ( contactAdditionStatus.containsValue(false)) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(this.addressBookList);
     }
 
 }
